@@ -1,0 +1,112 @@
+---
+title: "Math in Music"
+author: "Beckett Hyde & Maedee Trank-Greene"
+date: "Due November, 2023"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(tinytex)
+
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(out.width = "60%")
+```
+
+
+
+```{r}
+# Load in observations_onlydata.csv
+observations <- read_csv("observations_onlydata.csv")
+summary(observations)
+```
+
+```{r}
+# scatter plot matrix
+colors <- c("#FC4E07", "#00BFFF")
+
+pairs(observations, col = colors[observations$Genre + 1])
+```
+```{r}
+# Want a dataframe with Genre as category, not 0 and 1
+
+observations2 <- observations
+
+observations2$Genre[observations2$Genre == 0] <- "Country"
+
+observations2$Genre[observations2$Genre == 1] <- "Pop"
+                                           
+ggplot(data = observations2, aes(x = Genre, y = Danceability)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Danceability') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Danceability")
+
+ggplot(data = observations2, aes(x = Genre, y = Energy)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Energy') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Energy")
+
+ggplot(data = observations2, aes(x = Genre, y = Tempo)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Tempo') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Tempo")
+
+ggplot(data = observations2, aes(x = Genre, y = Speechiness)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Speechiness') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Speechiness")
+
+ggplot(data = observations2, aes(x = Genre, y = Instrumentalness)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Instrumentalness') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Instrumentalness")
+
+ggplot(data = observations2, aes(x = Genre, y = Liveness)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Liveness') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Liveness")
+
+ggplot(data = observations2, aes(x = Genre, y = Loudness)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Loudness') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Loudness")
+
+ggplot(data = observations2, aes(x = Genre, y = Key)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='Key') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Key")
+
+ggplot(data = observations2, aes(x = Genre, y = TimeSignature)) +
+  geom_boxplot(fill = 'sky blue') +
+  labs(x='Music Genre',y='TimeSignature') +
+  theme_bw() + ggtitle("Boxplot of Music Genre and Time Signature")
+```
+
+
+```{r}
+# Plot our response variable
+plot(observations$Genre,
+     main = "Distribution of Response Variable",
+     xlab = "Index",
+     ylab = "Value",
+     yaxt = 'n',
+     pch = 16,
+     col = colors[observations$Genre + 1])
+
+axis(2, at = c(0, 1))
+
+ratio_pop <- length(observations$Genre[observations$Genre == 1]) / length(observations$Genre)
+
+ratio_country <- length(observations$Genre[observations$Genre == 0]) / length(observations$Genre)
+```
+From the scatterplot matrix above, we can make some preliminary observations about the relationships between the predictors. 
+
+The following predictors have a weak positive linear relationship: dancebility & energy and energy & tempo. The following predictors have a  
+
+* Positive, linear, weak relationship for dancebility and energy
+* Positive, linear, weak relationship for tempo and energy
+* 

@@ -1,0 +1,75 @@
+---
+title: "Building Our Dataset"
+date: "October 10, 2023"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(tinytex)
+
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(out.width = "60%")
+```
+
+# The first step in building our dataset is to randomly select 100 artists from the top 10000 MTV Music Artists
+
+```{r echo = TRUE}
+library(tidyverse)
+
+# Read in csv files
+one <- read_csv("10000-MTV-Music-Artists-page-1.csv")
+two <- read_csv("10000-MTV-Music-Artists-page-2.csv")
+three <- read_csv("10000-MTV-Music-Artists-page-3.csv")
+four <- read_csv("10000-MTV-Music-Artists-page-4.csv")
+
+# Filter only Pop and Country artists
+pop_country_one <- one %>% filter(one$genre == "Pop" | one$genre == "Country")
+pop_country_two <- two %>% filter(two$genre == "Pop" | two$genre == "Country")
+pop_country_three <- three %>% filter(three$genre == "Pop" | three$genre == "Country")
+pop_country_four <- four %>% filter(four$genre == "Pop" | four$genre == "Country")
+
+# Create dataframes with just artist name and genre
+one <- subset(pop_country_one, select = c(name, genre))
+two <- subset(pop_country_two, select = c(name, genre))
+three <- subset(pop_country_three, select = c(name, genre))
+four <- subset(pop_country_four, select = c(name, genre))
+
+one_name <- one$name
+one_genre <- one$genre
+two_name <- two$name
+two_genre <- two$genre
+three_name <- three$name
+three_genre <- three$genre
+four_name <- four$name
+four_genre <- four$genre
+
+# Create a list of all artist names
+all_artists_name <- data.frame(c(one_name, two_name, three_name, four_name))
+all_artists_genre <- data.frame(c(one_genre, two_genre, three_genre, four_genre))
+
+all_artists <- cbind(all_artists_name, all_artists_genre)
+
+# Change column names
+colnames(all_artists) <- c("Name", "Genre")
+
+# Remove NA
+all_artists <- na.omit(all_artists)
+
+# Set seed
+set.seed(100)
+
+# Randomly select 100 artist
+rows <- sample(x = nrow(all_artists), size = 100, replace = FALSE)
+
+# Select the rows the all_artist dataframe with randomly selected 100 artist
+rand100 <- all_artists[rows, ]
+```
+
+```{r echo = TRUE}
+write.csv(rand100, file = "random_artists.csv", row.names = FALSE)
+```
+
